@@ -45,7 +45,7 @@ class Chef
         end
 
         execute 'Grant permissions' do
-          command "echo \" GRANT REPLICATION SLAVE ON *.* TO '#{new_resource.user}'@'#{new_resource.host}'
+          command "echo \" GRANT SELECT,REPLICATION CLIENT,RELOAD,REPLICATION SLAVE ON *.* TO '#{new_resource.user}'@'#{new_resource.host}'
                    IDENTIFIED BY PASSWORD '#{mysql_password(new_resource.password)}' \" | mysql -S #{mysql_socket}"
           environment ({ 'MYSQL_PWD' => mysql_instance.initial_root_password })
           not_if "echo \"SHOW GRANTS FOR '#{new_resource.user}'@'#{new_resource.host}';\" | mysql -S #{mysql_socket}",

@@ -26,3 +26,24 @@ mysql_master 'default' do
   binlog_do_db %w(test1 test2)
   password 'replication_password'
 end
+
+execute 'Create database test1' do
+  command "echo 'create database if not exists test1;' | mysql -S /var/run/mysql-default/mysqld.sock -pchange_me"
+end
+
+execute 'Create database test2' do
+  command "echo 'create database if not exists test2;' | mysql -S /var/run/mysql-default/mysqld.sock -pchange_me"
+end
+
+mysql_service 'slave' do
+  version '5.6'
+  initial_root_password 'change_me'
+  port 3309
+  action [:create, :start]
+end
+
+mysql_slave 'slave' do
+  master_host '127.0.0.1'
+  password 'replication_password'
+  replicate_ignore_db 'mysql'
+end
