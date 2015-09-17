@@ -20,6 +20,7 @@ require 'chef/resource/lwrp_base'
 
 class Chef
   class Resource
+    #
     class MysqlMaster < Chef::Resource::LWRPBase
       provides :mysql_master
       resource_name :mysql_master

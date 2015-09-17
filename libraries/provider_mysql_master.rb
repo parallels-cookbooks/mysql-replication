@@ -20,12 +20,13 @@ require 'chef/provider/lwrp_base'
 
 class Chef
   class Provider
+    #
     class MysqlMaster < Chef::Provider::LWRPBase
       use_inline_resource if defined?(use_inline_resource)
 
       include MysqlCookbook::Helpers
 
-      def whytun_supported?
+      def whyrun_supported?
         true
       end
 
@@ -41,15 +42,15 @@ class Chef
                     binlog_ignore_db: new_resource.binlog_ignore_db,
                     options: new_resource.options
           action :create
-          notifies :restart, "mysql_service[#{new_resource.name}]"
+          notifies :restart, "mysql_service[#{new_resource.name}]", :immediately
         end
 
         execute 'Grant permissions' do
           command "echo \" GRANT SELECT,REPLICATION CLIENT,RELOAD,REPLICATION SLAVE ON *.* TO '#{new_resource.user}'@'#{new_resource.host}'
                    IDENTIFIED BY PASSWORD '#{mysql_password(new_resource.password)}' \" | mysql -S #{mysql_socket}"
-          environment ({ 'MYSQL_PWD' => mysql_instance.initial_root_password })
+          environment 'MYSQL_PWD' => mysql_instance.initial_root_password
           not_if "echo \"SHOW GRANTS FOR '#{new_resource.user}'@'#{new_resource.host}';\" | mysql -S #{mysql_socket}",
-                 environment: {'MYSQL_PWD' => mysql_instance.initial_root_password}
+                 environment: { 'MYSQL_PWD' => mysql_instance.initial_root_password }
         end
       end
 
@@ -61,10 +62,10 @@ class Chef
 
         execute 'Remove permissions' do
           command "echo \"DROP USER '#{new_resource.user}'@'#{new_resource.host}';\" | mysql -S #{mysql_socket}"
-          environment ({ 'MYSQL_PWD' => mysql_instance.initial_root_password })
+          environment 'MYSQL_PWD' => mysql_instance.initial_root_password
           action :run
           only_if "echo \"SHOW GRANTS FOR '#{new_resource.user}'@'#{new_resource.host}';\" | mysql -S #{mysql_socket}",
-                  environment: {'MYSQL_PWD' => mysql_instance.initial_root_password}
+                  environment: { 'MYSQL_PWD' => mysql_instance.initial_root_password }
         end
       end
     end

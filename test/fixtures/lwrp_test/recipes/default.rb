@@ -19,6 +19,7 @@
 mysql_service 'default' do
   version '5.6'
   initial_root_password 'change_me'
+  mysqld_options 'innodb_buffer_pool_size' => '64M'
   action [:create, :start]
 end
 
@@ -38,12 +39,14 @@ end
 mysql_service 'slave' do
   version '5.6'
   initial_root_password 'change_me'
+  mysqld_options 'innodb_buffer_pool_size' => '64M'
   port 3309
   action [:create, :start]
 end
 
 mysql_slave 'slave' do
   master_host '127.0.0.1'
+  id 123
   password 'replication_password'
   replicate_ignore_db 'mysql'
 end

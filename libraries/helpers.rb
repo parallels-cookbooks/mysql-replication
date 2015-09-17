@@ -17,6 +17,7 @@
 # limitations under the License.
 
 module MysqlReplication
+  #
   module Helpers
     require 'digest/sha1'
     require 'mixlib/shellout'
@@ -25,7 +26,7 @@ module MysqlReplication
       klass = if defined?(Chef::ResourceResolver)
                 r = Chef::ResourceResolver
                 r.respond_to?(:resolve) && r.resolve(:mysql_service)
-      end
+              end
       klass ||= Chef::Resource::MysqlService
       run_context.resource_collection.select { |r| r.is_a?(klass) && r.name == new_resource.name }.first
     end
@@ -40,9 +41,9 @@ module MysqlReplication
     end
 
     def replication_enabled?(socket, root_password)
-      result = Mixlib::ShellOut.new("echo 'show slave status\\G' | mysql -S #{socket}", env: {'MYSQL_PWD' => root_password})
+      result = Mixlib::ShellOut.new("echo 'show slave status\\G' | mysql -S #{socket}", env: { 'MYSQL_PWD' => root_password })
       result.run_command
-      slave_sql_running_string = result.stdout.each_line.find {|a| a.include?('Slave_SQL_Running') }
+      slave_sql_running_string = result.stdout.each_line.find { |a| a.include?('Slave_SQL_Running') }
       return false unless slave_sql_running_string
       slave_sql_running = slave_sql_running_string.split(':')[1].strip
       slave_sql_running == 'Yes'
@@ -64,10 +65,10 @@ module MysqlReplication
     end
 
     def master_databases
-      result = Mixlib::ShellOut.new("echo 'show databases' | #{mysql_master_connect}", env: {'MYSQL_PWD' => new_resource.password})
+      result = Mixlib::ShellOut.new("echo 'show databases' | #{mysql_master_connect}", env: { 'MYSQL_PWD' => new_resource.password })
       result.run_command
-      master_databases = result.stdout.each_line.map {|a| a.strip }.select {|a| a != 'information_schema' && a != 'performance_schema' }
-      master_databases.select {|a| ! new_resource.replicate_ignore_db.include?(a) }.map{ |a| a.strip}
+      master_databases = result.stdout.each_line.map(&:strip).select { |a| a != 'information_schema' && a != 'performance_schema' }
+      master_databases.select { |a| !new_resource.replicate_ignore_db.include?(a) }.map(&:strip)
     end
   end
 end

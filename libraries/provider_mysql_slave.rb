@@ -20,6 +20,7 @@ require 'chef/provider/lwrp_base'
 
 class Chef
   class Provider
+    #
     class MysqlSlave < Chef::Provider::LWRPBase
       use_inline_resource if defined?(use_inline_resource)
 
@@ -41,7 +42,7 @@ class Chef
                     replicate_ignore_db: new_resource.replicate_ignore_db,
                     options: new_resource.options
           action :create
-          notifies :restart, "mysql_service[#{new_resource.name}]"
+          notifies :restart, "mysql_service[#{new_resource.name}]", :immediately
         end
 
         execute 'Get dump' do
@@ -74,11 +75,11 @@ class Chef
               MASTER_LOG_POS=#{master_position};
             )
 
-            result = Mixlib::ShellOut.new("echo '#{command_master}' | mysql -S #{mysql_socket}", env: {'MYSQL_PWD' => mysql_instance.initial_root_password})
+            result = Mixlib::ShellOut.new("echo '#{command_master}' | mysql -S #{mysql_socket}", env: { 'MYSQL_PWD' => mysql_instance.initial_root_password })
             result.run_command
             result.error!
 
-            result = Mixlib::ShellOut.new("echo 'start slave' | mysql -S #{mysql_socket}", env: {'MYSQL_PWD' => mysql_instance.initial_root_password})
+            result = Mixlib::ShellOut.new("echo 'start slave' | mysql -S #{mysql_socket}", env: { 'MYSQL_PWD' => mysql_instance.initial_root_password })
             result.run_command
             result.error!
           end

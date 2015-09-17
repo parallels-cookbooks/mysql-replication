@@ -20,6 +20,7 @@ require 'chef/resource/lwrp_base'
 
 class Chef
   class Resource
+    #
     class MysqlSlave < Chef::Resource::LWRPBase
       provides :mysql_slave
       resource_name :mysql_slave

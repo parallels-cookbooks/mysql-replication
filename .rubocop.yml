@@ -1,0 +1,22 @@
+AllCops:
+  Include:
+    - Berksfile
+    - Gemfile
+    - Rakefile
+  Exclude:
+    - test/**/*
+    - vendor/**/*
+
+LineLength:
+  Enabled: false
+SingleSpaceBeforeFirstArg:
+  Exclude:
+    - '**/metadata.rb'
+HashSyntax:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Performance/Detect:
+  Enabled: false
+Lint/ShadowingOuterLocalVariable:
+  Enabled: false
