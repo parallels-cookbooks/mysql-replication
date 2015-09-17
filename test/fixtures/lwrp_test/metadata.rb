@@ -1,4 +1,3 @@
-
 name 'lwrp_test'
 maintainer 'Pavel Yudin'
 maintainer_email 'pyudin@parallels.com'

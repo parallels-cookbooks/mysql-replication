@@ -2,7 +2,7 @@
 
 server-id = <%= @id %>
 <% if @database %>
-  <% @database.each do |db| %>
+  <% [@database].flatten.each do |db| %>
 replicate-do-db = <%= db %>
   <% end %>
 <% end %>
