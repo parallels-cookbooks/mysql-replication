@@ -63,7 +63,7 @@ class Chef
 
         ruby_block 'Start replication' do
           block do
-            master_file, master_position = get_master_file_and_postion(dump_file)
+            master_file, master_position = get_master_file_and_position(dump_file)
 
             command_master = %(
               CHANGE MASTER TO

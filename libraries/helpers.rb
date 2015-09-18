@@ -49,7 +49,7 @@ module MysqlReplication
       slave_sql_running == 'Yes'
     end
 
-    def get_master_file_and_postion(file)
+    def get_master_file_and_position(file)
       ::File.open(file).each_line do |line|
         result = /CHANGE MASTER TO MASTER_LOG_FILE='(.+)', MASTER_LOG_POS=(\d+);/.match(line)
         return result[1, 2] if result
