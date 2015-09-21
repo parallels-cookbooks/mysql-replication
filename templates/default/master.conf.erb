@@ -1,0 +1,20 @@
+[mysqld]
+
+server-id = <%= @id %>
+log-bin = <%= @log_bin %>
+binlog_format = <%= @binlog_format %>
+<% if @binlog_do_db %>
+  <% [@binlog_do_db].flatten.each do |db| %>
+binlog-do-db = <%= db %>
+  <% end %>
+<% end %>
+<% if @binlog_ignore_db %>
+  <% [@binlog_ignore_db].flatten.each do |db| %>
+binlog-do-db = <%= db %>
+  <% end %>
+<% end %>
+<% if @options %>
+  <% @options.each do |key,value| %>
+<%= key %> = <%= value %>
+  <% end %>
+<% end %>

@@ -1,0 +1,18 @@
+[mysqld]
+
+server-id = <%= @id %>
+<% if @database %>
+  <% [@database].flatten.each do |db| %>
+replicate-do-db = <%= db %>
+  <% end %>
+<% end %>
+<% if @replicate_ignore_db %>
+  <% [@replicate_ignore_db].flatten.each do |db| %>
+replicate-ignore-db = <%= db %>
+  <% end %>
+<% end %>
+<% if @options %>
+  <% @options.each do |key,value| %>
+<%= key %> = <%= value %>
+  <% end %>
+<% end %>

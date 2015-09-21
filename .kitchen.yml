@@ -7,10 +7,10 @@ provisioner:
 
 platforms:
   - name: ubuntu-14.04
-  - name: centos-7.1
+  - name: centos-6.7
 
 suites:
   - name: default
     run_list:
-      - recipe[mysql-replication::default]
+      - recipe[lwrp_test::default]
     attributes:
