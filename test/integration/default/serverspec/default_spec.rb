@@ -48,5 +48,11 @@ describe 'mysql-replication::default' do
         its(:stdout) { should match /Replicate_Ignore_DB: mysql/ }
       end
     end
+
+    context 'Dump file' do
+      describe file('/tmp/kitchen/cache/slave-dump.sql') do
+        it { should_not exist }
+      end
+    end
   end
 end

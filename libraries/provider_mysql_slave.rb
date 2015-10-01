@@ -85,6 +85,10 @@ class Chef
           end
           not_if { replication_enabled?(mysql_socket, mysql_instance.initial_root_password) }
         end
+
+        file dump_file do
+          action :delete
+        end
       end
     end
   end
