@@ -5,6 +5,8 @@ license 'Apache 2.0'
 description 'Installs/Configures mysql-replication'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '1.0.1'
+issues_url 'https://github.com/parallels-cookbooks/mysql-replication/issues'
+source_url 'https://github.com/parallels-cookbooks/mysql-replication'
 
 supports 'amazon'
 supports 'redhat'
@@ -13,4 +15,3 @@ supports 'scientific'
 supports 'fedora'
 supports 'debian'
 supports 'ubuntu'
-

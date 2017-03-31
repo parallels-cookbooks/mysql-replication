@@ -17,12 +17,12 @@ describe 'mysql-replication::default' do
 
     context 'configures master' do
       describe command("echo 'show slave hosts;' | #{sql_command}") do
-        its(:stdout) { should match /123/ }
+        its(:stdout) { should match %r{123} }
       end
 
       describe command("echo \"show variables like '%log%';\"| #{sql_command}") do
-        its(:stdout) { should match /log_bin[\s]+ON/ }
-        its(:stdout) { should match /binlog_format[\s]+MIXED/ }
+        its(:stdout) { should match %r{log_bin[\s]+ON} }
+        its(:stdout) { should match %r{binlog_format[\s]+MIXED} }
       end
     end
   end
@@ -42,10 +42,10 @@ describe 'mysql-replication::default' do
 
     context 'configures master' do
       describe command("echo 'show slave status\\G' | #{sql_command}") do
-        its(:stdout) { should match /Slave_IO_Running: Yes/ }
-        its(:stdout) { should match /Slave_SQL_Running: Yes/ }
-        its(:stdout) { should match /Master_Host: 127.0.0.1/ }
-        its(:stdout) { should match /Replicate_Ignore_DB: mysql/ }
+        its(:stdout) { should match %r{Slave_IO_Running: Yes} }
+        its(:stdout) { should match %r{Slave_SQL_Running: Yes} }
+        its(:stdout) { should match %r{Master_Host: 127.0.0.1} }
+        its(:stdout) { should match %r{Replicate_Ignore_DB: mysql} }
       end
     end
 

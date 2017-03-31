@@ -24,11 +24,10 @@ module MysqlReplication
 
     def mysql_instance
       klass = if defined?(Chef::ResourceResolver)
-                r = Chef::ResourceResolver
-                r.respond_to?(:resolve) && r.resolve(:mysql_service)
+                res = Chef::ResourceResolver
+                res.respond_to?(:resolve) && res.resolve(:mysql_service)
               end
       klass ||= Chef::Resource::MysqlService
-      run_context.resource_collection.select { |r| r.is_a?(klass) && r.name == new_resource.name }.first
       run_context.root_run_context.resource_collection.select { |r| r.is_a?(klass) && r.name == new_resource.name }.first
     end
 
