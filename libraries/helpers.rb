@@ -29,6 +29,7 @@ module MysqlReplication
               end
       klass ||= Chef::Resource::MysqlService
       run_context.resource_collection.select { |r| r.is_a?(klass) && r.name == new_resource.name }.first
+      run_context.root_run_context.resource_collection.select { |r| r.is_a?(klass) && r.name == new_resource.name }.first
     end
 
     def mysql_socket

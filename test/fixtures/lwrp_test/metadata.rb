@@ -7,3 +7,4 @@ long_description 'Wrapper cookbook to test logstash-forwarder LWRP'
 version '0.1.0'
 
 depends 'mysql-replication'
+depends 'mysql'
